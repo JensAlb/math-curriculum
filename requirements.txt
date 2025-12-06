@@ -1,0 +1,11 @@
+# Web-Framework
+Flask==2.3.3
+
+# ORM (damit du nicht SQL tippen musst)
+Flask-SQLAlchemy==3.0.3
+
+# Datenbank-Migrationssystem (optional)
+Flask-Migrate==4.0.4
+
+# Um Umgebungsvariablen aus .env zu laden (optional)
+python-dotenv==1.0.0
