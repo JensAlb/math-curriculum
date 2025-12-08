@@ -149,14 +149,17 @@ def init_db():
     Erstellt alle Tabellen und legt Beispiel-Jahrgänge an.
     Wird nur einmal verwendet.
     """
-    db.create_all()
 
-    if Jahrgang.query.count() == 0:
-        db.session.add_all([
-            Jahrgang(name="Jahrgang 5", ordnung=1),
-            Jahrgang(name="Jahrgang 6", ordnung=2),
-            Jahrgang(name="Jahrgang 7", ordnung=3)
-        ])
+     # App-Kontext erzwingen:
+    with app.app_context():
+        db.create_all()
+
+        if Jahrgang.query.count() == 0:
+            db.session.add_all([
+                Jahrgang(name="Jahrgang 5", ordnung=1),
+                Jahrgang(name="Jahrgang 6", ordnung=2),
+                Jahrgang(name="Jahrgang 7", ordnung=3)
+            ])
         db.session.commit()
 
     return "Datenbank initialisiert ✔"
