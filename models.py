@@ -43,6 +43,9 @@ class Thema(db.Model):
     schwierigkeit = db.Column(db.Integer, default=1)
     fachbereich = db.Column(db.String)
 
+    methode = db.Column(db.String)
+    digitale_hilfsmittel = db.Column(db.String)
+
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime)
 
