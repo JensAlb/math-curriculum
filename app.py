@@ -162,6 +162,57 @@ def init_db():
     return "Datenbank initialisiert ✔"
 
 
+# -----------------------------------------------------
+# Formular anzeigen
+# -----------------------------------------------------
+@app.route("/thema/new")
+def thema_new():
+    jahrgaenge = Jahrgang.query.order_by(Jahrgang.ordnung).all()
+    return render_template("thema_new.html", jahrgaenge=jahrgaenge)
+
+# ------------------------------------------------------
+# Thema speichern
+# ------------------------------------------------------
+@app.route("/thema/create", methods=["POST"])
+def thema_create():
+    titel = request.form["titel"]
+    beschreibung = request.form.get("beschreibung", "")
+    fachbereich = request.form.get("fachbereich", "")
+    methode = request.form.get("methode", "")
+    digitale_hilfsmittel = request.form.get("digitale_hilfsmittel", "")
+    schwierigkeit = int(request.form.get("schwierigkeit", 1))
+
+    # Neues Thema anlegen
+    thema = Thema(
+        titel=titel,
+        beschreibung=beschreibung,
+        fachbereich=fachbereich,
+        schwierigkeit=schwierigkeit
+    )
+
+    # Neue zusätzliche Felder (werden in models.py ergänzt!)
+    thema.methode = methode
+    thema.digitale_hilfsmittel = digitale_hilfsmittel
+
+    db.session.add(thema)
+    db.session.commit()
+
+    # Jahrgang-Zuordnung
+    jahrgang_ids = request.form.getlist("jahrgang_ids")
+
+    for jid in jahrgang_ids:
+        mapping = ThemaJahrgang(
+            thema_id=thema.id,
+            jahrgang_id=int(jid),
+            position=0
+        )
+        db.session.add(mapping)
+
+    db.session.commit()
+
+    return render_template("index.html")
+
+
 # ----------------------------------------------------
 # App lokal starten
 # ----------------------------------------------------
