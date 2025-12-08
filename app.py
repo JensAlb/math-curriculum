@@ -160,7 +160,8 @@ def init_db():
                 Jahrgang(name="Jahrgang 6", ordnung=2),
                 Jahrgang(name="Jahrgang 7", ordnung=3)
             ])
-        db.session.commit()
+            
+            db.session.commit()
 
     return "Datenbank initialisiert ✔"
 
